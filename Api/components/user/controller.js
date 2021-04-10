@@ -1,4 +1,5 @@
 const TABLE = "user";
+const {nanoid} = require('nanoid');
 module.exports = class UserController {
   constructor(store) {
     this.store = store || require("../../../store/dummy");
@@ -11,9 +12,11 @@ module.exports = class UserController {
   }
   upsert(id, name) {
     return new Promise(async (resolve, reject) => {
-      if (!id || !name) {
+      if (!name) {
         reject("Invalid data!");
         return false;
+      }if (!id) {
+        id=nanoid();
       }
       let data = {
         id,
