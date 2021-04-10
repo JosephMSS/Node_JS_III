@@ -30,9 +30,9 @@ async function getUser(req, res) {
   }
 }
 async function upsert(req, res) {
-  const { id, name } = req.body;
+  const { id, name,username } = req.body;
   try {
-    const data = await userController.upsert(id, name);
+    const data = await userController.upsert({id,name,username});
     response.success(req, res, data, 200);
   } catch (error) {
     response.error(req, res, error.message, 500);

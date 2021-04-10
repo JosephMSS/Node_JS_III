@@ -13,6 +13,9 @@ async function get(table, id) {
   return tab.filter((item) => item.id === id)[0] || null;
 }
 async function upsert(table, data) {
+  if (!db[table]) {
+    db[table]=[];
+  }
   return await db[table].push(data);
 }
 async function remove(table, id) {
