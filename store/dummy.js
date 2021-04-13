@@ -9,7 +9,6 @@ async function list(table) {
 }
 async function query(table,q) {
   let tab=await list(table);
-  console.log('Dummy table entity',tab);
   let keys=Object.keys(q);
   let key=keys[0];
   return tab.filter(item=>item[key]===q[key])[0];

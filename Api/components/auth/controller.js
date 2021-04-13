@@ -1,5 +1,7 @@
 const TABLE = "auth";
+const bcrypt = require('bcrypt');
 const auth = require('../../../auth/');
+
 module.exports = class Auth {
   constructor(store) {
     this.store = store || require("../../../store/dummy");
@@ -7,7 +9,8 @@ module.exports = class Auth {
   async login({username, password }){
     try {
       const data=await this.store.query(TABLE,{username:username})
-      if (data.password===password) {
+      const equals=await bcrypt.compare(password,data.password)
+      if (equals) {
         return auth.sing(data);
       }else{
         throw new Error('Invalid info!')
@@ -26,7 +29,7 @@ module.exports = class Auth {
         authData.username=username
       }
       if (password) {
-        authData.password=password
+        authData.password=await bcrypt.hash(password,5)
       }
       console.log("authdata",authData);
       await this.store.upsert(TABLE, authData);
