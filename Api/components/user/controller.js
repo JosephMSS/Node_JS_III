@@ -21,7 +21,7 @@ module.exports = class UserController {
       if (!id) {
         id = nanoid();
       }
-      if (!username||!password) {
+      if (username||password) {
          auth=await authController.upsert({id,username,password})
       }
       let user = {

@@ -4,9 +4,15 @@ let db = {
     { id: "2", name: "Mariliz Montoya" },
   ],
 };
-
 async function list(table) {
-  return db[table];
+  return db[table]||[];
+}
+async function query(table,q) {
+  let tab=await list(table);
+  console.log('Dummy table entity',tab);
+  let keys=Object.keys(q);
+  let key=keys[0];
+  return tab.filter(item=>item[key]===q[key])[0];
 }
 async function get(table, id) {
   const tab = await list(table);
@@ -30,4 +36,5 @@ module.exports = {
   get,
   upsert,
   remove,
+  query,
 };
