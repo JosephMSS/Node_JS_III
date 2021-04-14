@@ -9,5 +9,6 @@ const config={
  host:process.env.HOST,
  publicRoute:process.env.PUBLIC_ROUTE,
  filesRoute:process.env.FILES_ROUTE,
+ secret:process.env.SECRET,
 }
 module.exports={config}

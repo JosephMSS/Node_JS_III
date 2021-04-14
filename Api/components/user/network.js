@@ -8,6 +8,7 @@ const router = express.Router();
 router.get("/", getUsers);
 router.get("/:id", getUser);
 router.post("/", upsert);
+router.patch("/", upsert);
 router.delete("/:id", remove);
 
 async function getUsers(req, res) {
