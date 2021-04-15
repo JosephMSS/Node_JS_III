@@ -1,4 +1,5 @@
 const { config } = require("../config/index");
+const{err}=require('../utils/error')
 const jwt = require("jsonwebtoken");
 const SECRET = config.secret;
 function sing(data) {
@@ -6,31 +7,40 @@ function sing(data) {
 }
 const check = {
   own: function (req, id) {
-    const decoded=decodeHeader(req);
-    console.log('Decoded Token',decoded);
+    const decoded = decodeHeader(req);
+
+    console.log("Decoded Token", decoded);
+    if (decoded.id !== id) {
+      throw err('No puedes hacer esto',401);
+ 
+    }
   },
 };
 function decodeHeader(req) {
   const authorization = req.headers.authorization || ""; //Obtenemos el id del usuario
   const token = getToken(authorization); //Obtenemos el token de la cabecera
   const decoded = verify(token); //verificamosel token
+  console.log("decode header", decoded);
   req.user = decoded; //lo guardamos en caso de que querramos emplearlo mas tarde
+  return decoded; 
 }
 function verify(token) {
-    return jwt.verify(token,SECRET)
+  return jwt.verify(token, SECRET);
 }
 function getToken(authorization) {
   if (!authorization) {
     //verificamos que xista un token
-    throw new Error("No viene token");
+    throw err("No viene token",400);
   }
-  if (authorization.indexOf("Barer" === -1)) {
+  console.log(authorization);
+  if (authorization.indexOf("Bearer") === -1) {
     //verificamos el formato del token
-    throw new Error("Formato invalido");
+    throw err("Formato invalido",400);
   }
-  let token=authorization.replace('Barer','')
-  return token;
+  let token = authorization.replace("Bearer", "");
+  return token.trim();
 }
 module.exports = {
   sing,
+  check,
 };

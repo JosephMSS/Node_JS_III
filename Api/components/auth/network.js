@@ -1,5 +1,5 @@
 const express = require("express");
-const response = require("../../../network/respose");
+const response = require("../../../network/response");
 const { authController } = require("./index");
 const router = express.Router();
 
@@ -9,7 +9,7 @@ router.post("/login", async (req, res) => {
     const token = await authController.login({ username, password });
     response.success(req,res,token,200);
   } catch (error) {
-    response.success(req,res,error.message);
+    response.error(req,res,error.message);
 
   }
 });

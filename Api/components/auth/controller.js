@@ -1,6 +1,8 @@
 const TABLE = "auth";
 const bcrypt = require('bcrypt');
 const auth = require('../../../auth/');
+const{err}=require('../../../utils/error')
+
 
 module.exports = class Auth {
   constructor(store) {
@@ -10,10 +12,11 @@ module.exports = class Auth {
     try {
       const data=await this.store.query(TABLE,{username:username})
       const equals=await bcrypt.compare(password,data.password)
+      console.log('EQUAlS',equals);
       if (equals) {
         return auth.sing(data);
       }else{
-        throw new Error('Invalid info!')
+        throw err('Invalid info!')
       }
    
     } catch (error) {
