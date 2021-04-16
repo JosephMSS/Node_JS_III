@@ -9,44 +9,34 @@ const router = express.Router();
 router.get("/", getUsers);
 router.get("/:id", getUser);
 router.post("/", upsert);
-router.patch("/",secure.checkOut('update'),upsert);
+router.patch("/", secure.checkOut("update"), upsert);
 router.delete("/:id", remove);
 
-async function getUsers(req, res) {
-  console.log(req.body);
-
+async function getUsers(req, res, next) {
   try {
     const data = await userController.list();
     response.success(req, res, data, 200);
-  } catch (error) {
-    response.error(req, res, error.message, 500);
-  }
+  } catch (next) {}
 }
-async function getUser(req, res) {
+async function getUser(req, res, next) {
   const { id } = req.params;
   try {
     const data = await userController.get(id);
     response.success(req, res, data, 200);
-  } catch (error) {
-    response.error(req, res, error.message, 500);
-  }
+  } catch (next) {}
 }
-async function upsert(req, res) {
+async function upsert(req, res, next) {
   const { id, name, username, password } = req.body;
   try {
     const data = await userController.upsert({ id, name, username, password });
     response.success(req, res, data, 200);
-  } catch (error) {
-    response.error(req, res, error.message, 500);
-  }
+  } catch (next) {}
 }
-async function remove(req, res) {
+async function remove(req, res, next) {
   const { id } = req.params;
   try {
     const data = await userController.remove(id);
     response.success(req, res, data, 200);
-  } catch (error) {
-    response.error(req, res, error.message, 500);
-  }
+  } catch (next) {}
 }
 module.exports = router;

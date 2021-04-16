@@ -3,14 +3,11 @@ const response = require("../../../network/response");
 const { authController } = require("./index");
 const router = express.Router();
 
-router.post("/login", async (req, res) => {
+router.post("/login", async (req, res,next) => {
   const { username, password } = req.body;
   try {
     const token = await authController.login({ username, password });
     response.success(req,res,token,200);
-  } catch (error) {
-    response.error(req,res,error.message);
-
-  }
+  } catch (next){};
 });
 module.exports = router;
