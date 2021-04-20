@@ -12,11 +12,10 @@ router.post("/", upsert);
 router.patch("/", secure.checkOut("update"), upsert);
 router.delete("/:id", remove);
 
-async function getUsers(req, res, next) {
-  try {
-    const data = await userController.list();
-    response.success(req, res, data, 200);
-  } catch (next) {}
+function getUsers(req, res, next) {
+    userController.list().then((list)=>{
+      response.success(req, res, list, 200);
+    }).catch(next)
 }
 async function getUser(req, res, next) {
   const { id } = req.params;
