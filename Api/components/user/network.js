@@ -19,10 +19,10 @@ function getUsers(req, res, next) {
 }
 async function getUser(req, res, next) {
   const { id } = req.params;
-  try {
-    const data = await userController.get(id);
-    response.success(req, res, data, 200);
-  } catch (next) {}
+   userController.get(id).then(data=>{
+     response.success(req, res, data, 200);
+   }).catch(next);
+  
 }
 async function upsert(req, res, next) {
   const { id, name, username, password } = req.body;
