@@ -53,7 +53,7 @@ function list(table) {
 }
 function get(table, id) {
   return new Promise((resolve, reject) => {
-    connection.query(`SELECT * FROM ${table} WHERE id=${id}`, (err, data) => {
+    connection.query(`SELECT * FROM ${table} WHERE id='${id}'`, (err, data) => {
       if (err) {
         reject(err);
         return false;
@@ -62,7 +62,7 @@ function get(table, id) {
     });
   });
 }
-function insert( table,data) {
+function insert(table,data) {
     return new Promise((resolve, reject) => {
     connection.query(`INSERT INTO ${table} SET ?`,data, (err, result) => {
       if (err) {
@@ -75,7 +75,7 @@ function insert( table,data) {
 }
 function update( table,data) {
     return new Promise((resolve, reject) => {
-    connection.query(`UPDATE INTO ${table} SET ? WHERE id=?`,[data,data.id], (err, result) => {
+    connection.query(`UPDATE ${table} SET ? WHERE id=?`,[data,data.id], (err, result) => {
       if (err) {
         reject(err);
         return false;
@@ -84,11 +84,14 @@ function update( table,data) {
     });
   });
 }
-function upsert(table,data) {
-    if(data&&data.id){
-        return update(table,data)
+async function upsert(table,data) {
+  let isNew=await exist(table,data)
+    if(isNew){
+      console.log('JMMS_insert',table)
+      return insert(table,data); 
     }else{
-        return insert(table,data); 
+      console.log('JMMS_update',table)
+      return update(table,data); 
     }
 }
 function query(table,query) {
@@ -102,4 +105,27 @@ function query(table,query) {
         });
       });
 }
-module.exports = { list, get,upsert,query};
+function removeAll(table) {
+    return new Promise((resolve, reject) => {
+        connection.query(`DELETE FROM ${table}`, (err, result) => {
+          if (err) {
+            reject(err);
+            return false;
+          }
+          resolve(result[0]||null);
+        });
+      });
+}
+function exist(table,data) {
+  return new Promise((resolve, reject) => {
+    connection.query(`SELECT count(*) FROM ${table} WHERE id=?`,data.id, (err, result) => {
+      if (err) {
+        reject(err);
+        return false;
+      }
+      let found=result[0]
+      resolve(found["count(*)"]?false:true);
+    });
+  });
+}
+module.exports = { list, get,upsert,query,removeAll};

@@ -42,4 +42,12 @@ module.exports = class UserController {
       resolve(user);
     });
   }
+  removeAll() {
+    return new Promise(async (resolve, reject) => {
+ 
+      let user = await this.store.removeAll(TABLE);
+      await authController.removeAll()
+      resolve(user);
+    });
+  }
 };

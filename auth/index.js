@@ -13,7 +13,6 @@ const check = {
     console.log("Decoded Token", decoded);
     if (decoded.id !== id) {
       throw err('No puedes hacer esto',401);
- 
     }
   },
 };

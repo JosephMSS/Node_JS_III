@@ -11,6 +11,7 @@ router.get("/:id", getUser);
 router.post("/", upsert);
 router.patch("/", secure.checkOut("update"), upsert);
 router.delete("/:id", remove);
+router.delete("/all/users", removeAll);
 
 function getUsers(req, res, next) {
     userController.list().then((list)=>{
@@ -35,6 +36,12 @@ async function remove(req, res, next) {
   const { id } = req.params;
   try {
     const data = await userController.remove(id);
+    response.success(req, res, data, 200);
+  } catch (next) {}
+}
+async function removeAll(req, res, next) {
+  try {
+    const data = await userController.removeAll();
     response.success(req, res, data, 200);
   } catch (next) {}
 }

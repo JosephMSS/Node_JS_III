@@ -25,6 +25,10 @@ module.exports = class Auth {
   }
   upsert({ id, username, password }){
     return new Promise(async (resolve, reject) => {
+      if (!id) {
+         resolve('Invalid info!')
+         return false
+      }
       const authData = {
         id,
       };
@@ -33,10 +37,17 @@ module.exports = class Auth {
       }
       if (password) {
         authData.password=await bcrypt.hash(password,5)
-      }
+    }
       console.log("authdata",authData);
       await this.store.upsert(TABLE, authData);
       resolve(authData);
+    });
+  }
+  removeAll() {
+    return new Promise(async (resolve, reject) => {
+ 
+      let auth = await this.store.removeAll(TABLE);
+      resolve(auth);
     });
   }
 };
