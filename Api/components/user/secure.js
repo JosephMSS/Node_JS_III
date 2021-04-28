@@ -7,6 +7,10 @@ function checkOut(action){
                 auth.check.own(req,id) 
                 next();
                 break;
+            case 'follow':
+                auth.check.logged(req) 
+                next();
+                break;
         
             default:
                 break;

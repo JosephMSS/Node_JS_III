@@ -8,13 +8,22 @@ const router = express.Router();
 //Routes
 router.get("/", getUsers);
 router.get("/:id", getUser);
-router.post("/", upsert);
-router.patch("/", secure.checkOut("update"), upsert);
+router.get("/:id/following", getFollowing);
+router.post("/", insert);
+router.patch("/", secure.checkOut("update"), update);
 router.delete("/:id", remove);
 router.delete("/all/users", removeAll);
+router.post("/follow/:id",secure.checkOut("follow"),follow);
 
 function getUsers(req, res, next) {
     userController.list().then((list)=>{
+      response.success(req, res, list, 200);
+    }).catch(next)
+}
+function getFollowing(req, res, next) {
+    const {id}=req.params
+    console.log('JMMS_id',id)
+    userController.getFollowing(id).then((list)=>{
       response.success(req, res, list, 200);
     }).catch(next)
 }
@@ -25,10 +34,17 @@ async function getUser(req, res, next) {
    }).catch(next);
   
 }
-async function upsert(req, res, next) {
+async function insert(req, res, next) {
   const { id, name, username, password } = req.body;
   try {
-    const data = await userController.upsert({ id, name, username, password });
+    const data = await userController.insert({ id, name, username, password });
+    response.success(req, res, data, 200);
+  } catch (next) {}
+}
+async function update(req, res, next) {
+  const { id, name, username, password } = req.body;
+  try {
+    const data = await userController.update({ id, name, username, password });
     response.success(req, res, data, 200);
   } catch (next) {}
 }
@@ -44,5 +60,12 @@ async function removeAll(req, res, next) {
     const data = await userController.removeAll();
     response.success(req, res, data, 200);
   } catch (next) {}
+}
+function follow(req,res,next) {
+  const from =req.user.id
+  const to =req.params.id
+  userController.follow(from,to).then((data)=>{
+    response.success(req, res, data, 200);
+  }).catch(next);
 }
 module.exports = router;

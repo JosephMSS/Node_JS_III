@@ -11,7 +11,13 @@ module.exports = class UserController {
   get(id) {
     return this.store.get(TABLE, id);
   }
-  upsert({ id, name,username,password }) {
+    getFollowing(id) {
+      const join={};
+      join[TABLE]='user_to'//{user:"user_to"}
+      const query={user_from:id}
+    return this.store.query(`${TABLE}_follow`,query,join);
+  }
+  insert({ id, name,username,password }) {
     return new Promise(async (resolve, reject) => {
       let auth={};
       if (!name) {
@@ -22,13 +28,34 @@ module.exports = class UserController {
         id = nanoid();
       }
       if (username||password) {
-         auth=await authController.upsert({id,username,password})
+         auth=await authController.insert({id,username,password})
       }
       let user = {
         id,
         name,
       };
-      await this.store.upsert(TABLE, user);
+      await this.store.insert(TABLE, user);
+      resolve({user,auth});
+    });
+  }
+  update({ id, name,username,password }) {
+    return new Promise(async (resolve, reject) => {
+      let auth={};
+      if (!name) {
+        reject("Invalid data!");
+        return false;
+      }
+      if (!id) {
+        id = nanoid();
+      }
+      if (username||password) {
+         auth=await authController.update({id,username,password})
+      }
+      let user = {
+        id,
+        name,
+      };
+      await this.store.update(TABLE, user);
       resolve({user,auth});
     });
   }
@@ -48,6 +75,22 @@ module.exports = class UserController {
       let user = await this.store.removeAll(TABLE);
       await authController.removeAll()
       resolve(user);
+    });
+  }
+   follow(from,to){
+    return new Promise(async (resolve, reject) => {
+      if(!from||!to)
+      {
+        reject("Invalid data!");
+        return false
+      }
+      let follow={
+        user_from:from,
+        user_to:to
+      }
+      let response=await this.store.insert(`${TABLE}_follow`,follow);
+      resolve(response);
+      
     });
   }
 };

@@ -15,6 +15,9 @@ const check = {
       throw err('No puedes hacer esto',401);
     }
   },
+  logged: function (req) {
+    const decoded = decodeHeader(req); 
+  },
 };
 function decodeHeader(req) {
   const authorization = req.headers.authorization || ""; //Obtenemos el id del usuario
