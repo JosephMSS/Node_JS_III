@@ -10,5 +10,8 @@ const config={
  publicRoute:process.env.PUBLIC_ROUTE,
  filesRoute:process.env.FILES_ROUTE,
  secret:process.env.SECRET,
+mysql_service:{
+    port:process.env.MYSQL_SERVICE_PORT||3001
+}
 }
 module.exports={config}
