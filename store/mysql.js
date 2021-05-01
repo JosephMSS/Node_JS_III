@@ -88,29 +88,16 @@ function update(table, data) {
     );
   });
 }
-async function upsert(table, data) {
-  console.log("JMMS_table", table);
-  console.log("JMMS_data", data);
-  let isNew = await exist(table, data);
-  console.log("JMMS_isNew", isNew);
-  if (isNew) {
-    console.log("JMMS_insert", table);
-    return insert(table, data);
-  } else {
-    console.log("JMMS_update", table);
-    return update(table, data);
-  }
-}
 function query(table, query, join) {
   let joinQuery = "";
   if (join) {
-    console.log('JMMS_join',join)
+    console.log('JMMS_join',join)//{ user: 'user_to' }
 
   const key=Object.keys(join)[0];
-  console.log('JMMS_key',key)
+  console.log('JMMS_key',key)//user
   const val=join[key];
-  console.log('JMMS_val',val)
-  joinQuery=`JOIN ${key} ON ${table}.${val} =${key}.id`
+  console.log('JMMS_val',val)//user_to
+  joinQuery=`JOIN ${key} ON ${table}.${val} =${key}.id`//JOIN user ON user_follow.user_to =user.id
   console.log('JMMS_joinQuery',joinQuery)
   }
   return new Promise((resolve, reject) => {
@@ -138,20 +125,16 @@ function removeAll(table) {
     });
   });
 }
-function exist(table, data) {
+function remove(table,id) {
   return new Promise((resolve, reject) => {
-    connection.query(
-      `SELECT count(*) FROM ${table} WHERE id=?`,
-      data.id,
-      (err, result) => {
-        if (err) {
-          reject(err);
-          return false;
-        }
-        let found = result[0];
-        resolve(found["count(*)"] ? false : true);
+    connection.query(`DELETE FROM ${table} WHERE id=?`,id, (err, result) => {
+      if (err) {
+        reject(err);
+        return false;
       }
-    );
+      resolve(result[0] || null);
+    });
   });
 }
-module.exports = { list, get, insert, update, query, removeAll };
+
+module.exports = { list, get, insert, update, query, removeAll,remove };
