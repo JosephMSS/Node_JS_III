@@ -3,7 +3,6 @@ const{err}=require('../utils/error')
 const jwt = require("jsonwebtoken");
 const SECRET = config.secret;
 function sing(data) {
-  console.log('JMMS_JSON.stringify(data)',JSON.stringify(data))
   return jwt.sign(JSON.stringify(data), SECRET);
 }
 const check = {

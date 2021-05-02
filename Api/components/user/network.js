@@ -22,7 +22,6 @@ function getUsers(req, res, next) {
 }
 function getFollowing(req, res, next) {
     const {id}=req.params
-    console.log('JMMS_id',id)
     userController.getFollowing(id).then((list)=>{
       response.success(req, res, list, 200);
     }).catch(next)

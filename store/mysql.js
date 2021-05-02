@@ -91,14 +91,10 @@ function update(table, data) {
 function query(table, query, join) {
   let joinQuery = "";
   if (join) {
-    console.log('JMMS_join',join)//{ user: 'user_to' }
 
   const key=Object.keys(join)[0];
-  console.log('JMMS_key',key)//user
   const val=join[key];
-  console.log('JMMS_val',val)//user_to
   joinQuery=`JOIN ${key} ON ${table}.${val} =${key}.id`//JOIN user ON user_follow.user_to =user.id
-  console.log('JMMS_joinQuery',joinQuery)
   }
   return new Promise((resolve, reject) => {
     connection.query(

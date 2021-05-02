@@ -11,7 +11,8 @@ const config={
  filesRoute:process.env.FILES_ROUTE,
  secret:process.env.SECRET,
 mysql_service:{
-    port:process.env.MYSQL_SERVICE_PORT||3001
+    port:process.env.MYSQL_SERVICE_PORT||3001,
+    host:process.env.LOCAL_HOST||'localhost'
 }
 }
 module.exports={config}
