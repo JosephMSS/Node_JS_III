@@ -1,5 +1,6 @@
 require("dotenv").config();
 const config={
+removeDB:process.env.REMOTE_DB||false,
  port:process.env.PORT,
  dbUser:process.env.DB_USER,
  dbPassword:process.env.DB_PASSWORD,
