@@ -6,7 +6,7 @@ const config={
  dbHost:process.env.DB_HOST,
  dbPort:process.env.DB_PORT,
  dbName:process.env.DB_NAME,
- host:process.env.HOST,
+ host:process.env.HOST ||'http://localhost',
  publicRoute:process.env.PUBLIC_ROUTE,
  filesRoute:process.env.FILES_ROUTE,
  secret:process.env.SECRET,
