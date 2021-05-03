@@ -12,7 +12,11 @@ const config={
  secret:process.env.SECRET,
 mysql_service:{
     port:process.env.MYSQL_SERVICE_PORT||3001,
-    host:process.env.LOCAL_HOST||'localhost'
+    host:process.env.MYSQL_SERVICE_LOCAL_HOST||'localhost'
+},
+post_service:{
+    port:process.env.POST_SERVICE_PORT||3002,
+    host:process.env.POST_SERVICE_LOCAL_HOST||'localhost'
 }
 }
 module.exports={config}

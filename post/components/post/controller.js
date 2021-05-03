@@ -1,6 +1,5 @@
 const TABLE = "post";
-const { nanoid } = require("nanoid");
-const {authController} = require('../auth');
+
 module.exports = class PostController {
   constructor(store) {
     this.store = store || require("../../../store/dummy");

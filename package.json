@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon Api/index.js",
-    "devM": "nodemon mysql/index.js"
+    "devM": "nodemon mysql/index.js",
+    "devP": "nodemon post/index.js"
   },
   "keywords": [],
   "author": "",
