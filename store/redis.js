@@ -21,14 +21,14 @@ function list(table) {
   });
 }
 function get(table, id) {
-    return list(`${table}_${id}`)
+  return list(`${table}_${id}`);
 }
 async function insert(table, data) {
   let key = table;
+
   if (data & data.id) {
     key = `${key}_${data.id}`;
   }
-console.log('JMMS_key',key)
   client.setex(key, 30, JSON.stringify(data));
   return true;
 }

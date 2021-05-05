@@ -2,11 +2,22 @@ const TABLE = "user";
 const { nanoid } = require("nanoid");
 const { authController } = require("../auth");
 module.exports = class UserController {
-  constructor(store) {
+  constructor(store, cache) {
     this.store = store || require("../../../store/dummy");
+    this.cache = cache || require("../../../store/dummy");
   }
-  list() {
-    return this.store.list(TABLE);
+  async list() {
+    let users = await this.cache.list(TABLE);
+    console.log("JMMS_users", users);
+    if (!users) {
+      console.info("No estaba en cache, buscando en la base de datos");
+      users = await this.store.list(TABLE);
+      console.log("JMMS_users", users);
+      await this.cache.insert(TABLE, users);
+    } else {
+      console.info("Datos en cache");
+    }
+    return users;
   }
   get(id) {
     return this.store.get(TABLE, id);

@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon Api/index.js",
+    "dev": "nodemon api/index.js",
     "devM": "nodemon mysql/index.js",
-    "devP": "nodemon post/index.js"
+    "devP": "nodemon post/index.js",
+    "devR": "nodemon cache/index.js"
   },
   "keywords": [],
   "author": "",

@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: "api-app",
-      script: "./Api/index.js",
+      script: "./api/index.js",
       watch: true,
       env: {
         NODE_ENV: "development",
@@ -14,6 +14,17 @@ module.exports = {
     {
       name: "mysql-service",
       script: "./mysql/index.js",
+      watch: true,
+      env: {
+        NODE_ENV: "development",
+      },
+      env_production: {
+        NODE_ENV: "production",
+      },
+    },
+    {
+      name: "redis-service",
+      script: "./cache/index.js",
       watch: true,
       env: {
         NODE_ENV: "development",
