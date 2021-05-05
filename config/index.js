@@ -30,4 +30,5 @@ redis:{
 
 }
 }
+console.info('Variables de entorno',config);
 module.exports={config}
